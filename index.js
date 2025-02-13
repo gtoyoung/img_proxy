@@ -22,7 +22,7 @@ app.get("/soccerProxy", async function (req, res) {
   if (!imageUrl) {
     return res.status(404).send("Missing image URL");
   }
-
+  //
   try{
     const response = await fetch(imageUrl);
     if(!response.ok) throw new Error("Failed to fetch image");
