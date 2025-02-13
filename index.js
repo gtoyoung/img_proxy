@@ -29,7 +29,7 @@ app.get("/soccerProxy", async function (req, res) {
 
     const buffer = await response.buffer();
     const webpImage = await sharp(buffer)
-      .webp({quality: 80})
+      .webp({quality: 60})
       .toBuffer();
 
 
