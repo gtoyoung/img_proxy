@@ -2,8 +2,8 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import request from "request";
-import fetch from "node-fetch";
-import sharp from "sharp";
+// import fetch from "node-fetch";
+// import sharp from "sharp";
 dotenv.config();
 
 const PORT = process.env.PORT || 80;
@@ -22,24 +22,28 @@ app.get("/soccerProxy", async function (req, res) {
   if (!imageUrl) {
     return res.status(404).send("Missing image URL");
   }
+
+  const cleanUrl = imageUrl.split("?")[0];
+
+  request.get(cleanUrl).pipe(res);
   //
-  try{
-    const response = await fetch(imageUrl);
-    if(!response.ok) throw new Error("Failed to fetch image");
+  // try {
+  //   const response = await fetch(imageUrl);
+  //   if (!response.ok) throw new Error("Failed to fetch image");
 
-    const buffer = await response.buffer();
-    const webpImage = await sharp(buffer)
-      .webp({quality: 60})
-      .toBuffer();
+  //   const buffer = await response.buffer();
+  //   const webpImage = await sharp(buffer).webp({ quality: 60 }).toBuffer();
 
-
-    res.setHeader("Content-Type", "image/webp");
-    res.setHeader("Cache-Control", "public, max-age=86400, stale-while-revalidate");
-    res.send(webpImage);
-  } catch(error) {
-    console.log(error);
-    res.status(500).send("Error fetching or processing image");
-  }
+  //   res.setHeader("Content-Type", "image/webp");
+  //   res.setHeader(
+  //     "Cache-Control",
+  //     "public, max-age=86400, stale-while-revalidate"
+  //   );
+  //   res.send(webpImage);
+  // } catch (error) {
+  //   console.log(error);
+  //   res.status(500).send("Error fetching or processing image");
+  // }
 });
 
 app.listen(PORT, function () {
